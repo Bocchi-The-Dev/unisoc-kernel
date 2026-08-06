@@ -50,7 +50,7 @@ jobs:
           export CROSS_COMPILE=${{ env.TOOLCHAIN_PATH }}/aarch64-linux-gnu-
           
           # Configure kernel
-          make defconfig
+          make unisoc_defconfig
           
           # Build kernel
           make -j$(nproc)
