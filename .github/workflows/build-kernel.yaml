@@ -38,16 +38,16 @@ jobs:
       - name: Setup toolchain
         run: |
           cd toolchain
-          export PATH=$(pwd)/bin:$PATH
+          # Do NOT prepend toolchain/bin to PATH (prepending causes host linker mix-up)
           echo "TOOLCHAIN_PATH=$(pwd)/bin" >> $GITHUB_ENV
           cd ..
 
       # Compile kernel
       - name: Compile kernel
         run: |
-          export PATH=${{ env.TOOLCHAIN_PATH }}:$PATH
           export ARCH=arm64
-          export CROSS_COMPILE=aarch64-linux-gnu-
+          # Use the toolchain binaries via CROSS_COMPILE; do not put toolchain/bin before /usr/bin
+          export CROSS_COMPILE=${{ env.TOOLCHAIN_PATH }}/aarch64-linux-gnu-
           
           # Configure kernel
           make defconfig
